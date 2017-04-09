@@ -13,12 +13,12 @@
 // Database
 var database = firebase.database();
 
-// FIREBASE WATCHER + INITIAL LOADER - behaves similarly to .on("value")
+// FIREBASE WATCHER + INITIAL LOADER - updates or snapshot everytime a child is added to database
 database.ref().on("child_added", function(childSnapshot){
-    console.log(childSnapshot.val().name);
 
+  // creates the row in the table with the values from the firebase database
     var row = $("<tr>");
-    row.html("<td>" + childSnapshot.val().name + "</td>" + "<td>" + childSnapshot.val().city+ "</td><td>" + childSnapshot.val().rate + "</td><td>" + childSnapshot.val().arrival + "</td><td>" + childSnapshot.val().minutes + "</td>"
+    row.html("<td>" + childSnapshot.val().name + "</td>" + "<td>" + childSnapshot.val().city+ "</td><td>" + childSnapshot.val().rate + "</td><td>" + childSnapshot.val().arrival + "</td><td>" + childSnapshot.val().minutes + "</td>" 
         );
     $("#table").append(row);
 });
@@ -39,37 +39,38 @@ $("#submit-train").on("click", function(){
     
     // // current time
     var currentTime = moment().format();
-    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
 
-    // Depreciation warning from Moment happening HERE:
+    // Depreciation warning from Moment happening HERE (not sure how to fix):
     // Difference between the times
     var diffTime = moment().diff(firstTimeConverted, "minutes");
-    console.log("DIFFERENCE IN TIME: " + diffTime);
 
     // Time apart (remainder)
     var tRemainder = diffTime % tFrequency;
-    console.log(tRemainder);
 
       // Minute Until Train
     var tMinutesTillTrain = tFrequency - tRemainder;
-    console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
- 
+    
     // Next Train
     var nextTrain = moment().add(tMinutesTillTrain, "minutes").format("hh:mm");
-    console.log("ARRIVAL TIME: " + nextTrain);
-     
+
+    // Pushing values to the firebase database
     database.ref().push({
       name: trainName,
       city: destination,
       rate: tFrequency,
       arrival: nextTrain,
       minutes: tMinutesTillTrain
-    });
+   
 });
 
- 
+    // after submit set the value of each input field to an empty string
+   
+   $("#name").val(" ");
+    $("#destination").val(" ");
+    $("#first-train").val(" ");
+    $("#frequency").val(" ");
 
-
+ });
 
 
    
