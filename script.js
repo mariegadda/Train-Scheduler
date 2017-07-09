@@ -18,7 +18,7 @@ database.ref().on("child_added", function(childSnapshot){
 
   // creates the row in the table with the values from the firebase database
     var row = $("<tr>");
-    row.html("<td>" + childSnapshot.val().name + "</td>" + "<td>" + childSnapshot.val().city+ "</td><td>" + childSnapshot.val().rate + "</td><td>" + childSnapshot.val().arrival + "</td><td>" + childSnapshot.val().minutes + "</td>" 
+    row.html("<td>" + childSnapshot.val().name + "</td>" + "<td>" + childSnapshot.val().city+ "</td><td>" + childSnapshot.val().rate + "</td><td>" + childSnapshot.val().arrival + "</td><td>" + childSnapshot.val().minutes + "</td>" + "<td>" + "<button class='remove btn btn-default'>Remove</button>" + "</td>" 
         );
     $("#table").append(row);
 });
@@ -63,6 +63,7 @@ $("#submit-train").on("click", function(){
    
 });
 
+
     // after submit set the value of each input field to an empty string
    
    $("#name").val(" ");
@@ -74,4 +75,7 @@ $("#submit-train").on("click", function(){
 
 
    
-
+$(document).on("click", ".remove", function(){
+  console.log("Works!");
+  ref.child(key).remove();
+});
