@@ -75,7 +75,19 @@ $("#submit-train").on("click", function(){
 
 
    
-$(document).on("click", ".remove", function(){
-  console.log("Works!");
-  ref.child(key).remove();
-});
+  $(document.body).on("click", ".remove", function() {
+
+    // get constant trId / database ID
+    var buttonGradparentId = $(this).parent().parent().attr("id");
+
+    // remove from database
+    var removeRef = database.ref(buttonGradparentId);
+    removeRef.remove();
+
+
+    // remove from HTML
+    $(this).parent().parent().remove();
+    
+  });
+
+
